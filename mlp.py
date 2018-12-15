@@ -7,13 +7,14 @@ import pandas as pd
 
 # multi layer perceptron
 class MLP():
-    def __init__(self, n_neurons, n_layers, cont=False, epochs=100, activation='relu', loss=tf.keras.losses.mean_squared_error):
+    def __init__(self, n_neurons, n_layers, batch=1, cont=False, epochs=100, activation='relu', loss=tf.keras.losses.mean_squared_error):
         if cont:
             self.model = self.load()
         else:
             self.model = tf.keras.Sequential()
         self.n_neurons = n_neurons
         self.n_layers = n_layers
+        self.batch = batch
         self.epochs = epochs
         self.activation = activation
         self.loss = loss
@@ -34,7 +35,7 @@ class MLP():
         X = tf.constant(input, shape=[len(input), len(input[0])])
         Y = tf.constant(output, shape=[len(output), len(output[0])])
         # train model
-        self.model.fit(X, Y, epochs=self.epochs, batch_size=None, shuffle=True, workers=2, steps_per_epoch=25000)
+        self.model.fit(X, Y, epochs=self.epochs, batch_size=None, shuffle=True, workers=2, steps_per_epoch=self.batch)
         if save:
             self.save()
         return self.model

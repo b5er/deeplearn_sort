@@ -69,7 +69,7 @@ if __name__ == '__main__':
                 normalized_sorted.append(normalize(elem, list_min, list_max))
             normal_train_output.append(normalized_sorted)
 
-        neural_net = MLP(25, 10, epochs=16) # 16 --> 8 hours
+        neural_net = MLP(25, 10, epochs=200000) # 16 --> 8 hours
         neural_net.build()
         neural_net.train(normal_train_input, normal_train_output)
 
@@ -110,7 +110,7 @@ if __name__ == '__main__':
 
     if predict:
         model = tf.keras.models.load_model("sort_net.mpl")
-        data = [[4,0,6,10,8]] # [3, 4, 6, 8, 10] Sorted
+        data = [[4,3,6,10,8]] # [3, 4, 6, 8, 10] Sorted
         list_max = 45
         list_min = 1
         normal_pred = []
