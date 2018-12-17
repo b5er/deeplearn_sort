@@ -43,7 +43,7 @@ if __name__ == '__main__':
         sorted_dataset = deepcopy(dataset)
         for data in sorted_dataset:
             data.sort()
-        write_dataset_csv(dataset, sorted_dataset, '../data/numeric/train_dataset.csv')
+        write_dataset_csv(dataset, sorted_dataset, '../data/numeric/1_45/train_dataset.csv')
 
         # generate testing dataset
         data = GenerateData(5, 1, 5)
@@ -51,10 +51,10 @@ if __name__ == '__main__':
         sorted_dataset = deepcopy(dataset)
         for data in sorted_dataset:
             data.sort()
-        write_dataset_csv(dataset, sorted_dataset, '../data/numeric/test_dataset.csv')
+        write_dataset_csv(dataset, sorted_dataset, '../data/numeric/1_45/test_dataset.csv')
 
     if train_model:
-        input, output = read_dataset('../data/numeric/train_dataset.csv')
+        input, output = read_dataset('../data/numeric/1_45/train_dataset.csv')
         input = [ast.literal_eval(elem) for elem in input]
         list_max = 45
         list_min = 1
@@ -80,7 +80,7 @@ if __name__ == '__main__':
     if eval_model:
         model = tf.keras.models.load_model("sort_net.mpl")
 
-        input, output = read_dataset('../data/numeric/test_dataset.csv')
+        input, output = read_dataset('../data/numeric/1_45/test_dataset.csv')
         list_max = 45
         list_min = 1
         input = [ast.literal_eval(elem) for elem in input]
