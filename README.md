@@ -1,19 +1,19 @@
 # Deep Learning Sorting
-<br />
+
 (Images)
-<br />
+
 Table of content
-<br />
+
 Installation
-<br />
+
 How to use
-<br />
+
 Results
-  1. Normal sorting
-  2. Vanilla MLP
-  3. RNN
-  4. CNN
-<br />
+  - Normal sorting
+  - Vanilla MLP
+  - RNN
+  - CNN
+
 License
-<br />
+
 Links & credit
