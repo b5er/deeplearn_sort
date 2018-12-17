@@ -2,18 +2,18 @@
 
 (Images)
 
-Table of content
+## Table of content
 
-Installation
+## Installation
 
-How to use
+## How to use
 
-Results
+## Results
   - Normal sorting
   - Vanilla MLP
   - RNN
   - CNN
 
-License
+## License
 
-Links & credit
+## Links & credit
