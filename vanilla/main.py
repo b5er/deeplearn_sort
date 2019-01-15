@@ -1,62 +1,43 @@
 import sys
 sys.path.append('..')
 
-from generate_data import GenerateData
-from mlp import MLP
-
+from vanilla_mlp import MLP
+from data.generate_data import GenerateData
 import tensorflow as tf
 import numpy as np
 import pandas as pd
-from copy import deepcopy
 import ast
 import math
 import time
 
-generate_data = False
-train_model = False
+
+train_model = True
 eval_model = False
-predict = True
+predict = False
 
-def write_dataset_csv(arrays, sorted_arrays, filename):
-    dataset = {'unsorted': arrays, 'sorted': sorted_arrays}
-    df = pd.DataFrame(dataset, columns=['unsorted', 'sorted'])
-    df.to_csv(filename, sep='\t', encoding='utf-8')
 
-def read_dataset(filename):
-    df = pd.read_csv(filename, sep='\t', encoding='utf-8')
-    return df['unsorted'].values.T.tolist(), df['sorted'].values.T.tolist()
+def write_result():
+    pass
+
 
 def normalize(x, min, max):
     if(max - min == 0):
         return -1
     return (x - min) / (max - min)
 
-
 def denormalize(y, min, max):
     return (y * (max - min)) + min
 
-if __name__ == '__main__':
-    if generate_data:
-        # generate training dataset
-        data = GenerateData(5, 1, 5)
-        dataset = [data.gen_int() for _ in range(50000)]
-        sorted_dataset = deepcopy(dataset)
-        for data in sorted_dataset:
-            data.sort()
-        write_dataset_csv(dataset, sorted_dataset, '../data/numeric/1_45/train_dataset.csv')
 
-        # generate testing dataset
-        data = GenerateData(5, 1, 5)
-        dataset = [data.gen_int() for _ in range(10000)]
-        sorted_dataset = deepcopy(dataset)
-        for data in sorted_dataset:
-            data.sort()
-        write_dataset_csv(dataset, sorted_dataset, '../data/numeric/1_45/test_dataset.csv')
+
+if __name__ == '__main__':
+
+    size = 45
 
     if train_model:
-        input, output = read_dataset('../data/numeric/1_45/train_dataset.csv')
+        input, output = GenerateData.read_dataset(f'../data/numeric/1_{size}/train_dataset.csv')
         input = [ast.literal_eval(elem) for elem in input]
-        list_max = 45
+        list_max = len(input[0])
         list_min = 1
         normal_train_input = []
         for unsort in input:
@@ -73,15 +54,15 @@ if __name__ == '__main__':
                 normalized_sorted.append(normalize(elem, list_min, list_max))
             normal_train_output.append(normalized_sorted)
 
-        neural_net = MLP(25, 10, epochs=200000) # 16 --> 8 hours
-        neural_net.build()
+        neural_net = MLP(25, 5, batch=10, cont=False, epochs=1000, size=size)
+        neural_net.build(len(input[0]))
         neural_net.train(normal_train_input, normal_train_output)
 
     if eval_model:
-        model = tf.keras.models.load_model("sort_net.mpl")
+        model = tf.keras.models.load_model(f'./models/sort_net_{size}.mpl')
 
-        input, output = read_dataset('../data/numeric/1_45/test_dataset.csv')
-        list_max = 45
+        input, output = GenerateData.read_dataset(f'../data/numeric/1_{size}/test_dataset.csv')
+        list_max = len(input[0])
         list_min = 1
         input = [ast.literal_eval(elem) for elem in input]
         normal_test_input = []
@@ -113,10 +94,11 @@ if __name__ == '__main__':
         print('Mean:', np.mean(total_scores), 'Standard Dev:', np.std(total_scores))
 
     if predict:
-        model = tf.keras.models.load_model("sort_net.mpl")
-        data = [[4,3,6,10,8]] # [3, 4, 6, 8, 10] Sorted
-        list_max = 45
-        list_min = 1
+        model = tf.keras.models.load_model('./models/sort_net.mpl')
+        data = [[36, 36, 36, 14, 39, 28, 30, 44, 5, 7, 32, 39, 16, 21, 22, 37, 23, 2, 34, 17, 28, 7, 33, 22, 4, 16, 36, 6, 18, 11, 35, 4, 1, 5, 42, 41, 37, 36, 26, 12, 5, 28, 10, 36, 25]]
+        # [1, 2, 4, 4, 5, 5, 5, 6, 7, 7, 10, 11, 12, 14, 16, 16, 17, 18, 21, 22, 22, 23, 25, 26, 28, 28, 28, 30, 32, 33, 34, 35, 36, 36, 36, 36, 36, 36, 37, 37, 39, 39, 41, 42, 44] Sorted
+        list_max = len(data[0])
+        list_min = min(data[0])
         normal_pred = []
         for unsort in data:
             normalized_unsort = []
