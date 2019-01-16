@@ -1,32 +1,31 @@
 import sys
-sys.path.append('..')
+sys.path.append('convolutional')
+sys.path.append('data')
+sys.path.append('normal_sort_algos')
+sys.path.append('recurrent')
+sys.path.append('vanilla')
 
-import data
-import normal_sort_algos
-import vanilla.main
-import recurrent
-import convolutional
 
+CONVOLUTIONAL = True
 DATA_GEN = False
 N_SORT_ALGOS = False
-VANILLA = True
+VANILLA = False
 RECURRENT = False
-CONVOLUTIONAL = False
 
 
 if __name__ == '__main__':
 
+    if CONVOLUTIONAL:
+        import convolutional.main
+
     if DATA_GEN:
-        data.main.main()
+        import data.main
 
     if N_SORT_ALGOS:
-        normal_sort_algos.main()
+        import normal_sort_algos.main
 
     if VANILLA:
-        vanilla.main.main()
+        import vanilla.main
 
     if RECURRENT:
-        recurrent.main()
-
-    if CONVOLUTIONAL:
-        convolutional.main()
+        import recurrent.main

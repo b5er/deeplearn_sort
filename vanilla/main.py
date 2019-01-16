@@ -29,13 +29,10 @@ def denormalize(y, min, max):
     return (y * (max - min)) + min
 
 
-
-if __name__ == '__main__':
-
-    size = 45
+def main(size, file_train, file_test, save_location):
 
     if train_model:
-        input, output = GenerateData.read_dataset(f'../data/numeric/1_{size}/train_dataset.csv')
+        input, output = GenerateData.read_dataset(file_train)
         input = [ast.literal_eval(elem) for elem in input]
         list_max = len(input[0])
         list_min = 1
@@ -59,9 +56,9 @@ if __name__ == '__main__':
         neural_net.train(normal_train_input, normal_train_output)
 
     if eval_model:
-        model = tf.keras.models.load_model(f'./models/sort_net_{size}.mpl')
+        model = tf.keras.models.load_model(save_location)
 
-        input, output = GenerateData.read_dataset(f'../data/numeric/1_{size}/test_dataset.csv')
+        input, output = GenerateData.read_dataset(file_test)
         list_max = len(input[0])
         list_min = 1
         input = [ast.literal_eval(elem) for elem in input]
@@ -94,7 +91,7 @@ if __name__ == '__main__':
         print('Mean:', np.mean(total_scores), 'Standard Dev:', np.std(total_scores))
 
     if predict:
-        model = tf.keras.models.load_model('./models/sort_net.mpl')
+        model = tf.keras.models.load_model(save_location)
         data = [[36, 36, 36, 14, 39, 28, 30, 44, 5, 7, 32, 39, 16, 21, 22, 37, 23, 2, 34, 17, 28, 7, 33, 22, 4, 16, 36, 6, 18, 11, 35, 4, 1, 5, 42, 41, 37, 36, 26, 12, 5, 28, 10, 36, 25]]
         # [1, 2, 4, 4, 5, 5, 5, 6, 7, 7, 10, 11, 12, 14, 16, 16, 17, 18, 21, 22, 22, 23, 25, 26, 28, 28, 28, 30, 32, 33, 34, 35, 36, 36, 36, 36, 36, 36, 37, 37, 39, 39, 41, 42, 44] Sorted
         list_max = len(data[0])
@@ -119,3 +116,17 @@ if __name__ == '__main__':
         print([round(denormalize(elem, list_min, list_max)) for elem in result])
         print(f'time: {end - start} seconds')
         print(f'time: {end2 - start2} seconds')
+
+if __name__ == '__main__':
+    size = 45
+    file_train = f'../data/numeric/1_{size}/train_dataset.csv'
+    file_test = f'../data/numeric/1_{size}/test_dataset.csv'
+    save_location = f'./models/sort_net_{size}.mpl'
+    main(size, file_train, file_test, save_location)
+else:
+    print('Indirect.')
+    size = 45
+    file_train = f'./data/numeric/1_{size}/train_dataset.csv'
+    file_test = f'./data/numeric/1_{size}/test_dataset.csv'
+    save_location = f'./vanilla/models/sort_net_{size}.mpl'
+    main(size, file_train, file_test, save_location)

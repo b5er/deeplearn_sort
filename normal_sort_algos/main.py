@@ -19,11 +19,9 @@ MERGE_SORT = True
 QUICK_SORT = True
 
 
+def main(size, read_training):
 
-if __name__ == '__main__':
-
-    size = 45
-    input, output = GenerateData.read_dataset(f'../data/numeric/1_{size}/train_dataset.csv')
+    input, output = GenerateData.read_dataset(read_training)
     input, output = ast.literal_eval(input[0]), ast.literal_eval(output[0])
 
     if BUBBLE_SORT:
@@ -70,3 +68,13 @@ if __name__ == '__main__':
         end = time.time()
         assert arr == output
         print('Quick Sort:', f'time: {end - start} seconds')
+
+
+if __name__ == '__main__':
+    size = 45
+    read_training = f'../data/numeric/1_{size}/train_dataset.csv'
+    main(size, read_training)
+else:
+    size = 45
+    read_training = f'./data/numeric/1_{size}/train_dataset.csv'
+    main(size, read_training)

@@ -1,9 +1,5 @@
 import tensorflow as tf
 from tensorflow.keras import layers
-import numpy as np
-from math import floor, ceil
-import matplotlib.pyplot as plt
-import pandas as pd
 
 # multi layer perceptron
 class MLP():
