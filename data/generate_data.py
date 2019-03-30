@@ -1,17 +1,15 @@
-import random
+import numpy as np
 import pandas as pd
 
 class GenerateData():
-    def __init__(self, size, start=0, end=100):
+    def __init__(self, size):
         self.size = size
-        self.start = start
-        self.end = end
 
     def gen_int(self):
-        return [random.randint(self.start, self.end) for x in range(self.size)]
+        return list(np.random.choice(self.size, self.size, replace=False))
 
     def gen_float(self):
-        return [(x + random.random()) * random.random() for x in range(self.size)]
+        return list(np.random.choice(float(self.size), self.size, replace=False))
 
     def write_dataset_csv(arrays, sorted_arrays, filename):
         dataset = {'unsorted': arrays, 'sorted': sorted_arrays}

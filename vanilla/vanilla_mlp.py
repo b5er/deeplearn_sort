@@ -5,7 +5,10 @@ from tensorflow.keras import layers
 class MLP():
     def __init__(self, n_neurons, n_layers, batch=1, cont=False, epochs=100, size=45, activation='relu', loss=tf.keras.losses.mean_squared_error):
         if cont:
-            self.model = self.load(f'./models/sort_net_{size}.mpl')
+            try:
+                self.model = self.load(f'./models/sort_net_{size}.mpl')
+            except:
+                raise Exception('This type of model not previously saved.')
         else:
             self.model = tf.keras.Sequential()
         self.n_neurons = n_neurons
