@@ -21,12 +21,12 @@ def main(size, write_training, write_test):
 if __name__ == '__main__':
     sizes = [45, 100, 1000]
     for size in sizes:
-        write_training = f'../data/numeric/1_{size}/train_dataset.csv'
-        write_test = f'../data/numeric/1_{size}/test_dataset.csv'
+        write_training = f'../data/numeric/{size}/train_dataset.csv'
+        write_test = f'../data/numeric/{size}/test_dataset.csv'
         main(size, write_training, write_test)
 else:
     size = [45, 100, 1000]
     for size in sizes:
-        write_training = f'./data/numeric/1_{size}/train_dataset.csv'
-        write_test = f'./data/numeric/1_{size}/test_dataset.csv'
+        write_training = f'./data/numeric/{size}/train_dataset.csv'
+        write_test = f'./data/numeric/{size}/test_dataset.csv'
         main(size, write_training, write_test)
