@@ -11,9 +11,9 @@ import math
 import time
 
 
-train_model = True
+train_model = False
 eval_model = False
-predict = False
+predict = True
 
 
 def write_result():
@@ -45,9 +45,9 @@ def main(size, file_train, file_test, save_location):
 
         output = [ast.literal_eval(elem) for elem in output]
         normal_train_output = []
-        for sorted in output:
+        for _sorted in output:
             normalized_sorted = []
-            for elem in sorted:
+            for elem in _sorted:
                 normalized_sorted.append(normalize(elem, list_min, list_max))
             normal_train_output.append(normalized_sorted)
 
@@ -71,9 +71,9 @@ def main(size, file_train, file_test, save_location):
 
         output = [ast.literal_eval(elem) for elem in output]
         normal_test_output = []
-        for sorted in output:
+        for _sorted in output:
             normalized_sorted = []
-            for elem in sorted:
+            for elem in _sorted:
                 normalized_sorted.append(normalize(elem, list_min, list_max))
             normal_test_output.append(normalized_sorted)
 
@@ -103,7 +103,7 @@ def main(size, file_train, file_test, save_location):
                 normalized_unsort.append(normalize(elem, list_min, list_max))
             normal_pred.append(normalized_unsort)
         # print(normal_pred)
-        unseen_data = tf.constant(normal_pred, shape=[1, 5])
+        unseen_data = tf.constant(normal_pred, shape=[1, 45])
 
         start = time.time()
         result = model.predict(unseen_data, steps=1)
@@ -119,14 +119,14 @@ def main(size, file_train, file_test, save_location):
 
 if __name__ == '__main__':
     size = 45
-    file_train = f'../data/numeric/1_{size}/train_dataset.csv'
-    file_test = f'../data/numeric/1_{size}/test_dataset.csv'
+    file_train = f'../data/numeric/{size}/train_dataset.csv'
+    file_test = f'../data/numeric/{size}/test_dataset.csv'
     save_location = f'./models/sort_net_{size}.mpl'
     main(size, file_train, file_test, save_location)
 else:
     print('Indirect.')
     size = 45
-    file_train = f'./data/numeric/1_{size}/train_dataset.csv'
-    file_test = f'./data/numeric/1_{size}/test_dataset.csv'
+    file_train = f'./data/numeric/{size}/train_dataset.csv'
+    file_test = f'./data/numeric/{size}/test_dataset.csv'
     save_location = f'./vanilla/models/sort_net_{size}.mpl'
     main(size, file_train, file_test, save_location)

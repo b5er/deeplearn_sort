@@ -20,42 +20,39 @@ HEAP_SORT = True
 MERGE_SORT = True
 QUICK_SORT = True
 
+def write_result(): pass
+
 def fn_bubble_sort(input, output, start):
     bubb_sort = BubbleSort()
     bubb_sort.bubble_sort(input)
     assert input == output
     end = time.time()
-    print(f'bubble sort: {end - start}s')
 
 def fn_bucket_sort(input, output, start):
     buck_sort = BucketSort()
     buck_sort.bucket_sort(input)
     assert input == output
     end = time.time()
-    print(f'bucket sort: {end - start}s')
 
 def fn_heap_sort(input, output, start):
     heap_sort = HeapSort()
     heap_sort.heap_sort(input)
     assert input == output
     end = time.time()
-    print(f'heap sort: {end - start}s')
 
 def fn_merge_sort(input, output, start):
     m_sort = MergeSort()
     m_sort.merge_sort(input)
     assert input == output
     end = time.time()
-    print(f'merge sort: {end - start}s')
 
 def fn_quick_sort(input, output, start):
     q_sort = QuickSort()
     q_sort.quick_sort(0, len(input) - 1, input)
     assert input == output
     end = time.time()
-    print(f'quick sort: {end - start}s')
 
-def main(size, input, output):
+def main(size, input, output, thread_name):
     fn_sorts = []
 
     if BUBBLE_SORT:
@@ -76,18 +73,22 @@ def main(size, input, output):
             fn_sorts[i](deepcopy(i_data), deepcopy(o_data), time.time())
     end = time.time()
 
+    print('----------------', thread_name, ' done', '----------------')
     print(f'total time: {end - start}s')
 
 
 if __name__ == '__main__':
-    sizes = [45, 100, 1000]
+    count, sizes = 1, [45, 100, 1000]
+
     for size in sizes:
         read_training = f'../data/numeric/{size}/train_dataset.csv'
         input, output = GenerateData.read_dataset(read_training)
-        thread = Thread(target=main, args=(size, input, output))
-        print('--------', thread.getName(), '----------')
+        thread_name = f'thread-{count}'
+        thread = Thread(target=main, args=(size, input, output, thread_name))
+        thread.setName(thread_name)
+        print('----------------', thread_name, ' starting', '----------------')
         thread.start()
-        thread.join()
+        count += 1
 else:
     sizes = [45, 100, 1000]
     for size in sizes:

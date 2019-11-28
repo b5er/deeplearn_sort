@@ -1,14 +1,14 @@
 import tensorflow as tf
 from tensorflow.keras import layers
 
-# multi layer perceptron
+# Multi Layer Perceptron
 class MLP():
     def __init__(self, n_neurons, n_layers, batch=1, cont=False, epochs=100, size=45, activation='relu', loss=tf.keras.losses.mean_squared_error):
         if cont:
             try:
                 self.model = self.load(f'./models/sort_net_{size}.mpl')
             except:
-                raise Exception('This type of model not previously saved.')
+                raise Exception('This type of model not found.')
         else:
             self.model = tf.keras.Sequential()
         self.n_neurons = n_neurons
@@ -37,10 +37,11 @@ class MLP():
         self.model.fit(X, Y, epochs=self.epochs, batch_size=None, shuffle=True, workers=2, steps_per_epoch=self.batch)
         if save:
             self.save(size)
-        return self.model
+        return self.save(size) if save else self.model
 
     def save(self, size):
-        self.model.save(f'./models/sort_net_{size}.mpl')
+        tf.keras.models.save_model(self.model, f'./models/sort_net_{size}.mpl')
+        return self.model
 
     def load(self, size):
         return tf.keras.models.load_model(f'./models/sort_net_{size}.mpl')
