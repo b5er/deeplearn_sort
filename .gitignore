@@ -1,5 +1,11 @@
 .project
 __pycache__
 
+# data
 data/numeric/*
 data/string/*
+
+# models
+vanilla/models/*
+recurrent/models/*
+convolutional/models/*
